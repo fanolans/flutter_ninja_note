@@ -58,6 +58,7 @@ class _NotesGridState extends State<NotesGrid> {
         itemBuilder: (ctx, index) => NoteItem(
           note: _listNote[index].note,
           title: _listNote[index].title,
+          isPinned: _listNote[index].isPinned,
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,

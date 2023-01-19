@@ -5,20 +5,40 @@ class NoteItem extends StatefulWidget {
   // const NoteItem({Key key}) : super(key: key);
   final String title;
   final String note;
-  const NoteItem({@required this.note, @required this.title});
+  final bool isPinned;
+  const NoteItem({
+    @required this.note,
+    @required this.title,
+    @required this.isPinned,
+  });
   @override
   State<NoteItem> createState() => _NoteItemState();
 }
 
 class _NoteItemState extends State<NoteItem> {
+  bool _isPinned;
+
+  @override
+  void initState() {
+    _isPinned = widget.isPinned;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridTile(
       header: Align(
         alignment: Alignment.topRight,
         child: IconButton(
-          onPressed: () {},
-          icon: const Icon(CustomIcons.pin_outline),
+          onPressed: () {
+            setState(() {
+              _isPinned = !_isPinned;
+            });
+          },
+          icon: Icon(
+            _isPinned ? CustomIcons.pin : CustomIcons.pin_outline,
+          ),
         ),
       ),
       footer: ClipRRect(
