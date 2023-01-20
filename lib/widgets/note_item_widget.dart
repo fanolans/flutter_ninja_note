@@ -3,13 +3,17 @@ import 'package:note/presentations/custom_icons_icons.dart';
 
 class NoteItem extends StatefulWidget {
   // const NoteItem({Key key}) : super(key: key);
+  final String id;
   final String title;
   final String note;
   final bool isPinned;
+  final Function(String id) toggleIsPinnedFn;
   const NoteItem({
+    @required this.id,
     @required this.note,
     @required this.title,
     @required this.isPinned,
+    @required this.toggleIsPinnedFn,
   });
   @override
   State<NoteItem> createState() => _NoteItemState();
@@ -19,22 +23,14 @@ class _NoteItemState extends State<NoteItem> {
   bool _isPinned;
 
   @override
-  void initState() {
-    _isPinned = widget.isPinned;
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _isPinned = widget.isPinned;
     return GridTile(
       header: Align(
         alignment: Alignment.topRight,
         child: IconButton(
           onPressed: () {
-            setState(() {
-              _isPinned = !_isPinned;
-            });
+            widget.toggleIsPinnedFn(widget.id);
           },
           icon: Icon(
             _isPinned ? CustomIcons.pin : CustomIcons.pin_outline,
@@ -57,7 +53,7 @@ class _NoteItemState extends State<NoteItem> {
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey[800],
         ),
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(12),
         child: Text(widget.note),
       ),
     );
