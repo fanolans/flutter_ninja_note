@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note/api/note_api.dart';
 
 import '../models/note_model.dart';
 
@@ -36,7 +37,14 @@ class NotesProvider with ChangeNotifier {
       createdAt: DateTime.parse('2021-05-20 21:51:33'),
     ),
   ];
+
+  Future<void> getAndSetNotes() async {
+    _notes = await NoteApi().getAllNote();
+    notifyListeners();
+  }
+
   List<Note> get notes {
+    NoteApi().getAllNote();
     List<Note> tempListNote = _notes.where((note) => note.isPinned).toList();
     tempListNote.addAll(_notes.where((note) => !note.isPinned).toList());
     return tempListNote;
@@ -46,11 +54,19 @@ class NotesProvider with ChangeNotifier {
     int index = _notes.indexWhere((note) => note.id == id);
     if (index >= 0) {
       _notes[index].isPinned = !_notes[index].isPinned;
+      _notes[index] = _notes[index].copyWith(updatedAt: DateTime.now());
+      NoteApi().toggleIsPinned(
+        id,
+        _notes[index].isPinned,
+        _notes[index].updatedAt,
+      );
       notifyListeners();
     }
   }
 
-  void addNote(Note note) {
+  Future<void> addNote(Note note) async {
+    String id = await NoteApi().postNote(note);
+    note = note.copyWith(id: id);
     _notes.add(note);
     notifyListeners();
   }
@@ -59,7 +75,8 @@ class NotesProvider with ChangeNotifier {
     return _notes.firstWhere((note) => note.id == id);
   }
 
-  void updateNote(Note newNote) {
+  Future<void> updateNote(Note newNote) async {
+    await NoteApi().updateNote(newNote);
     int index = _notes.indexWhere((note) => note.id == newNote.id);
     _notes[index] = newNote;
     notifyListeners();
