@@ -26,12 +26,12 @@ class Note {
     bool isPinned,
   }) {
     return Note(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      note: note ?? this.note,
-      updatedAt: updatedAt ?? this.updatedAt,
-      createdAt: createdAt ?? this.createdAt,
-      isPinned: isPinned ?? this.isPinned,
+      id: id == null ? this.id : id,
+      title: title == null ? this.title : title,
+      note: note == null ? this.note : note,
+      updatedAt: updatedAt == null ? this.updatedAt : updatedAt,
+      createdAt: createdAt == null ? this.createdAt : createdAt,
+      isPinned: isPinned == null ? this.isPinned : isPinned,
     );
   }
 }
