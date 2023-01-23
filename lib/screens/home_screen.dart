@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:note/providers/notes_provider.dart';
 import 'package:note/screens/add_or_detail_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/notes_grid_widget.dart';
 
@@ -15,9 +17,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ninja Notes'),
+        title: const Text('Ninja Note'),
       ),
-      body: NotesGrid(),
+      body: FutureBuilder(
+        future:
+            Provider.of<NotesProvider>(context, listen: false).getAndSetNotes(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return NotesGrid();
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(AddOrDetailScreen.routeName);
