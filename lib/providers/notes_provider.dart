@@ -58,4 +58,15 @@ class NotesProvider with ChangeNotifier {
   Note getNote(String id) {
     return _notes.firstWhere((note) => note.id == id);
   }
+
+  void updateNote(Note newNote) {
+    int index = _notes.indexWhere((note) => note.id == newNote.id);
+    _notes[index] = newNote;
+    notifyListeners();
+  }
+
+  void deleteNote(String id) {
+    _notes.removeWhere((note) => note.id == id);
+    notifyListeners();
+  }
 }
