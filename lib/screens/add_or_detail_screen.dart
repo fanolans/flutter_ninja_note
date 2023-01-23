@@ -25,8 +25,8 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     _formKey.currentState.save();
     final now = DateTime.now();
     _note = _note.copyWith(
-      createdAt: now,
       updatedAt: now,
+      createdAt: now,
     );
     final notesProvider = Provider.of<NotesProvider>(context, listen: false);
     if (_note.id == null) {
@@ -41,7 +41,9 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
   void didChangeDependencies() {
     if (init) {
       String id = ModalRoute.of(context).settings.arguments as String;
-      _note = Provider.of<NotesProvider>(context).getNote(id);
+      if (id != null) {
+        _note = Provider.of<NotesProvider>(context).getNote(id);
+      }
       init = false;
     }
 
@@ -106,11 +108,12 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Text('Terakhir diubah: ${_convertData(_note.updatedAt)}'),
-          ),
+          if (_note.updatedAt != null)
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Text('Terakhir diubah: ${_convertData(_note.updatedAt)}'),
+            ),
         ],
       ),
     );
