@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:note/models/note_model.dart';
 import 'package:note/providers/notes_provider.dart';
 import 'package:provider/provider.dart';
@@ -37,10 +38,16 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     if (init) {
       String id = ModalRoute.of(context).settings.arguments as String;
       _note = Provider.of<NotesProvider>(context).getNote(id);
-      init = false;
     }
+    init = false;
 
     super.didChangeDependencies();
+  }
+
+  String _convertData(DateTime dateTime) {
+    int diff = DateTime.now().difference(dateTime).inDays;
+    if (diff >= 0) return DateFormat('dd-MM-yyyy').format(dateTime);
+    return DateFormat('hh:mm').format(dateTime);
   }
 
   @override
@@ -85,6 +92,7 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
                   },
                   maxLines: null,
                 ),
+                Text('Terakhir diubah: ${_convertData(_note.updatedAt)}'),
               ],
             ),
           ),
