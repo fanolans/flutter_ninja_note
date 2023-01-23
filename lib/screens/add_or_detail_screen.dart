@@ -29,7 +29,11 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
       updatedAt: now,
     );
     final notesProvider = Provider.of<NotesProvider>(context, listen: false);
-    notesProvider.addNote(_note);
+    if (_note.id == null) {
+      notesProvider.addNote(_note);
+    } else {
+      notesProvider.updateNote(_note);
+    }
     Navigator.of(context).pop();
   }
 
@@ -38,15 +42,15 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     if (init) {
       String id = ModalRoute.of(context).settings.arguments as String;
       _note = Provider.of<NotesProvider>(context).getNote(id);
+      init = false;
     }
-    init = false;
 
     super.didChangeDependencies();
   }
 
   String _convertData(DateTime dateTime) {
     int diff = DateTime.now().difference(dateTime).inDays;
-    if (diff >= 0) return DateFormat('dd-MM-yyyy').format(dateTime);
+    if (diff >= 1) return DateFormat('dd-MM-yyyy').format(dateTime);
     return DateFormat('hh:mm').format(dateTime);
   }
 
@@ -64,39 +68,50 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  initialValue: _note.title,
-                  decoration: const InputDecoration(
-                    hintText: 'Judul',
-                    border: InputBorder.none,
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        initialValue: _note.title,
+                        decoration: const InputDecoration(
+                          hintText: 'Judul',
+                          border: InputBorder.none,
+                        ),
+                        onSaved: (newValue) {
+                          _note = _note.copyWith(title: newValue);
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _note.note,
+                        decoration: const InputDecoration(
+                          hintText: 'Tulis catatan disini...',
+                          border: InputBorder.none,
+                        ),
+                        onSaved: (newValue) {
+                          _note = _note.copyWith(note: newValue);
+                        },
+                        maxLines: null,
+                      ),
+                    ],
                   ),
-                  onSaved: (newValue) {
-                    _note = _note.copyWith(title: newValue);
-                  },
                 ),
-                TextFormField(
-                  initialValue: _note.note,
-                  decoration: const InputDecoration(
-                    hintText: 'Tulis catatan disini...',
-                    border: InputBorder.none,
-                  ),
-                  onSaved: (newValue) {
-                    _note = _note.copyWith(note: newValue);
-                  },
-                  maxLines: null,
-                ),
-                Text('Terakhir diubah: ${_convertData(_note.updatedAt)}'),
-              ],
+              ),
             ),
           ),
-        ),
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: Text('Terakhir diubah: ${_convertData(_note.updatedAt)}'),
+          ),
+        ],
       ),
     );
   }
