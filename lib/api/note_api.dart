@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:note/models/note_model.dart';
 import 'package:http/http.dart' as http;
@@ -8,24 +9,31 @@ class NoteApi {
     final uri = Uri.parse(
       'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
     );
-    final response = await http.get(uri);
-    final result = json.decode(response.body) as Map<String, dynamic>;
-
     List<Note> notes = [];
-    result.forEach(
-      (key, value) {
-        notes.add(
-          Note(
-            id: key,
-            title: value['title'],
-            note: value['note'],
-            isPinned: value['isPinned'],
-            updatedAt: DateTime.parse(value['updated_at']),
-            createdAt: DateTime.parse(value['created_at']),
-          ),
-        );
-      },
-    );
+
+    try {
+      final response = await http.get(uri);
+      final result = json.decode(response.body) as Map<String, dynamic>;
+
+      result.forEach(
+        (key, value) {
+          notes.add(
+            Note(
+              id: key,
+              title: value['title'],
+              note: value['note'],
+              isPinned: value['isPinned'],
+              updatedAt: DateTime.parse(value['updated_at']),
+              createdAt: DateTime.parse(value['created_at']),
+            ),
+          );
+        },
+      );
+    } on SocketException {
+      throw const SocketException('Tidak dapat terhubung ke internet');
+    } catch (e) {
+      throw Exception('Eror, terjadi kesalahan');
+    }
     return notes;
   }
 
@@ -73,5 +81,13 @@ class NoteApi {
     };
     final body = json.encode(map);
     final response = await http.patch(uri, body: body);
+  }
+
+  Future<void> deleteNote(String id) async {
+    final uri = Uri.parse(
+      'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
+    );
+
+    final response = await http.patch(uri);
   }
 }
