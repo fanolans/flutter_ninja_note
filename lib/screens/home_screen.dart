@@ -23,11 +23,19 @@ class _HomeScreenState extends State<HomeScreen> {
         future:
             Provider.of<NotesProvider>(context, listen: false).getAndSetNotes(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.hasError.toString(),
+              ),
+            );
+          }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
+
           return NotesGrid();
         },
       ),
