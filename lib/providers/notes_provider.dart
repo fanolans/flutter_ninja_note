@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:note/api/note_api.dart';
 
@@ -39,7 +41,14 @@ class NotesProvider with ChangeNotifier {
   ];
 
   Future<void> getAndSetNotes() async {
-    _notes = await NoteApi().getAllNote();
+    try {
+      _notes = await NoteApi().getAllNote();
+    } on SocketException {
+      notifyListeners();
+      return;
+    } catch (e) {
+      return Future.error(e);
+    }
     notifyListeners();
   }
 
@@ -83,6 +92,7 @@ class NotesProvider with ChangeNotifier {
   }
 
   void deleteNote(String id) {
+    NoteApi().deleteNote(id);
     _notes.removeWhere((note) => note.id == id);
     notifyListeners();
   }
