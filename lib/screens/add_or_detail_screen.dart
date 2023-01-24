@@ -18,11 +18,16 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     updatedAt: null,
     createdAt: null,
   );
-  bool init = true;
+  bool _init = true;
+  bool _isLoading = false;
+
   final _formKey = GlobalKey<FormState>();
 
-  void submitNote() {
+  void submitNote() async {
     _formKey.currentState.save();
+    setState(() {
+      _isLoading = true;
+    });
     final now = DateTime.now();
     _note = _note.copyWith(
       updatedAt: now,
@@ -30,21 +35,21 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     );
     final notesProvider = Provider.of<NotesProvider>(context, listen: false);
     if (_note.id == null) {
-      notesProvider.addNote(_note);
+      await notesProvider.addNote(_note);
     } else {
-      notesProvider.updateNote(_note);
+      await notesProvider.updateNote(_note);
     }
     Navigator.of(context).pop();
   }
 
   @override
   void didChangeDependencies() {
-    if (init) {
+    if (_init) {
       String id = ModalRoute.of(context).settings.arguments as String;
       if (id != null) {
         _note = Provider.of<NotesProvider>(context).getNote(id);
       }
-      init = false;
+      _init = false;
     }
 
     super.didChangeDependencies();
@@ -65,7 +70,12 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               onPressed: submitNote,
-              child: const Text('Simpan'),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      'Simpan',
+                      style: TextStyle(color: Colors.white),
+                    ),
             ),
           ),
         ],
