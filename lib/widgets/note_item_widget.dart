@@ -9,8 +9,10 @@ import '../models/note_model.dart';
 class NoteItem extends StatefulWidget {
   // const NoteItem({Key key}) : super(key: key);
   final String id;
+  final BuildContext ctx;
   NoteItem({
     @required this.id,
+    @required this.ctx,
   });
   @override
   State<NoteItem> createState() => _NoteItemState();
@@ -24,7 +26,16 @@ class _NoteItemState extends State<NoteItem> {
     return Dismissible(
       key: Key(note.id),
       onDismissed: (direction) {
-        notesProvider.deleteNote(note.id);
+        notesProvider.deleteNote(note.id).catchError(
+          (onError) {
+            ScaffoldMessenger.of(widget.ctx).clearSnackBars();
+            ScaffoldMessenger.of(widget.ctx).showSnackBar(
+              SnackBar(
+                content: Text(onError.toString()),
+              ),
+            );
+          },
+        );
       },
       child: GestureDetector(
         onTap: () => Navigator.of(context).pushNamed(
@@ -36,7 +47,16 @@ class _NoteItemState extends State<NoteItem> {
             alignment: Alignment.topRight,
             child: IconButton(
               onPressed: () {
-                notesProvider.toggleIsPinned(note.id);
+                notesProvider.toggleIsPinned(note.id).catchError(
+                  (onError) {
+                    ScaffoldMessenger.of(widget.ctx).clearSnackBars();
+                    ScaffoldMessenger.of(widget.ctx).showSnackBar(
+                      SnackBar(
+                        content: Text(onError.toString()),
+                      ),
+                    );
+                  },
+                );
               },
               icon: Icon(
                 note.isPinned ? CustomIcons.pin : CustomIcons.pin_outline,
