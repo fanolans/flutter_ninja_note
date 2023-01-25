@@ -10,25 +10,29 @@ class NoteApi {
       'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
     );
     List<Note> notes = [];
-
     try {
       final response = await http.get(uri);
-      final result = json.decode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body) as Map<String, dynamic>;
+        print(response.statusCode);
 
-      result.forEach(
-        (key, value) {
-          notes.add(
-            Note(
-              id: key,
-              title: value['title'],
-              note: value['note'],
-              isPinned: value['isPinned'],
-              updatedAt: DateTime.parse(value['updated_at']),
-              createdAt: DateTime.parse(value['created_at']),
-            ),
-          );
-        },
-      );
+        result.forEach(
+          (key, value) {
+            notes.add(
+              Note(
+                id: key,
+                title: value['title'],
+                note: value['note'],
+                isPinned: value['isPinned'],
+                updatedAt: DateTime.parse(value['updated_at']),
+                createdAt: DateTime.parse(value['created_at']),
+              ),
+            );
+          },
+        );
+      } else {
+        throw Exception();
+      }
     } on SocketException {
       throw const SocketException('Tidak dapat terhubung ke internet');
     } catch (e) {
@@ -48,10 +52,19 @@ class NoteApi {
       'updated_at': note.updatedAt.toIso8601String(),
       'created_at': note.createdAt.toIso8601String(),
     };
-    final body = json.encode(map);
-    final response = await http.post(uri, body: body);
-    print(response.body);
-    return json.decode(response.body)['name'];
+    try {
+      final body = json.encode(map);
+      final response = await http.post(uri, body: body);
+      if (response.statusCode == 200) {
+        return json.decode(response.body)['name'];
+      } else {
+        throw Exception();
+      }
+    } on SocketException {
+      throw const SocketException('Tidak dapat terhubung ke internet');
+    } catch (e) {
+      throw Exception('Eror, terjadi kesalahan');
+    }
   }
 
   Future<void> updateNote(Note note) async {
@@ -63,8 +76,15 @@ class NoteApi {
       'note': note.note,
       'updated_at': note.updatedAt.toIso8601String(),
     };
-    final body = json.encode(map);
-    final response = await http.patch(uri, body: body);
+    try {
+      final body = json.encode(map);
+      final response = await http.patch(uri, body: body);
+      if (response.statusCode != 200) {
+        throw Exception();
+      }
+    } on SocketException {
+      throw const SocketException('TIdak dapat terhubung ke internet');
+    } catch (e) {}
   }
 
   Future<void> toggleIsPinned(
@@ -79,15 +99,32 @@ class NoteApi {
       'isPinned': isPinned,
       'updated_at': updatedAt.toIso8601String(),
     };
-    final body = json.encode(map);
-    final response = await http.patch(uri, body: body);
+    try {
+      final body = json.encode(map);
+      final response = await http.patch(uri, body: body);
+      if (response.statusCode != 200) {
+        throw Exception();
+      }
+    } on SocketException {
+      throw const SocketException('TIdak dapat terhubung ke internet');
+    } catch (e) {
+      throw Exception('Eror, terjadi kesalahan');
+    }
   }
 
   Future<void> deleteNote(String id) async {
     final uri = Uri.parse(
       'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
     );
-
-    final response = await http.patch(uri);
+    try {
+      final response = await http.patch(uri);
+      if (response.statusCode != 200) {
+        throw Exception();
+      }
+    } on SocketException {
+      throw const SocketException('TIdak dapat terhubung ke internet');
+    } catch (e) {
+      throw Exception('Eror, terjadi kesalahan');
+    }
   }
 }
