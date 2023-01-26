@@ -17,6 +17,14 @@ class Note {
     this.isPinned = false,
   });
 
+  Note.fromDb(Map<String, dynamic> data)
+      : id = data['id'],
+        title = data['title'],
+        note = data['note'],
+        isPinned = data['isPinned'] == 1,
+        updatedAt = DateTime.parse(data['updated_at']),
+        createdAt = DateTime.parse(data['created_at']);
+
   Note copyWith({
     String id,
     String title,
