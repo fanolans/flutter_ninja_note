@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:note/api/note_api.dart';
+import 'package:note/database/database_helper.dart';
 
 import '../models/note_model.dart';
 
@@ -43,13 +44,15 @@ class NotesProvider with ChangeNotifier {
   Future<void> getAndSetNotes() async {
     try {
       _notes = await NoteApi().getAllNote();
+      await DatabaseHelper().insertAllNotes(_notes);
+      notifyListeners();
     } on SocketException {
+      _notes = await DatabaseHelper().getAllNotes();
       notifyListeners();
       return;
     } catch (e) {
       return Future.error(e);
     }
-    notifyListeners();
   }
 
   List<Note> get notes {
@@ -72,6 +75,11 @@ class NotesProvider with ChangeNotifier {
           _notes[index].isPinned,
           _notes[index].updatedAt,
         );
+        await DatabaseHelper().toggleIsPinned(
+          id,
+          notes[index].isPinned,
+          notes[index].updatedAt,
+        );
       }
     } catch (e) {
       _notes[index].isPinned = !_notes[index].isPinned;
@@ -84,6 +92,7 @@ class NotesProvider with ChangeNotifier {
     try {
       String id = await NoteApi().postNote(note);
       note = note.copyWith(id: id);
+      await DatabaseHelper().insertNote(note);
       _notes.add(note);
       notifyListeners();
     } catch (e) {
@@ -98,6 +107,7 @@ class NotesProvider with ChangeNotifier {
   Future<void> updateNote(Note newNote) async {
     try {
       await NoteApi().updateNote(newNote);
+      await DatabaseHelper().updateNote(newNote);
       int index = _notes.indexWhere((note) => note.id == newNote.id);
       _notes[index] = newNote;
       notifyListeners();
@@ -113,6 +123,7 @@ class NotesProvider with ChangeNotifier {
       _notes.removeAt(index);
       notifyListeners();
       await NoteApi().deleteNote(id);
+      await DatabaseHelper().deleteNote(id);
     } catch (e) {
       _notes.insert(index, tempNote);
       notifyListeners();
