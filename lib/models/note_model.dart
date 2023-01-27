@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note/database/database_helper.dart';
 
 class Note {
   final String id;
@@ -18,12 +19,23 @@ class Note {
   });
 
   Note.fromDb(Map<String, dynamic> data)
-      : id = data['id'],
-        title = data['title'],
-        note = data['note'],
-        isPinned = data['isPinned'] == 1,
-        updatedAt = DateTime.parse(data['updated_at']),
-        createdAt = DateTime.parse(data['created_at']);
+      : id = data[DatabaseHelper.tableNotesId],
+        title = data[DatabaseHelper.tableNotesTitle],
+        note = data[DatabaseHelper.tableNotesNote],
+        isPinned = data[DatabaseHelper.tableNotesIsPinned] == 1,
+        updatedAt = DateTime.parse(data[DatabaseHelper.tableNotesUpdatedAt]),
+        createdAt = DateTime.parse(data[DatabaseHelper.tableNotesCreatedAt]);
+
+  Map<String, dynamic> toDb() {
+    return {
+      DatabaseHelper.tableNotesId: id,
+      DatabaseHelper.tableNotesTitle: title,
+      DatabaseHelper.tableNotesNote: note,
+      DatabaseHelper.tableNotesIsPinned: isPinned ? 1 : 0,
+      DatabaseHelper.tableNotesUpdatedAt: updatedAt.toIso8601String(),
+      DatabaseHelper.tableNotesCreatedAt: createdAt.toIso8601String(),
+    };
+  }
 
   Note copyWith({
     String id,
