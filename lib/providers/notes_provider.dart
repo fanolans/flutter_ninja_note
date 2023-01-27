@@ -127,7 +127,7 @@ class NotesProvider with ChangeNotifier {
     } catch (e) {
       _notes.insert(index, tempNote);
       notifyListeners();
-      Future.error(e);
+      return Future.error(e);
     }
   }
 }
