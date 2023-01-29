@@ -84,7 +84,7 @@ class NotesProvider with ChangeNotifier {
     } catch (e) {
       _notes[index].isPinned = !_notes[index].isPinned;
       notifyListeners();
-      Future.error(e);
+      return Future.error(e);
     }
   }
 
