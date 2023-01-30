@@ -41,7 +41,7 @@ class NoteApi {
     return notes;
   }
 
-  Future<String> postNote(Note note) async {
+  Future<String?> postNote(Note note) async {
     final uri = Uri.parse(
       'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
     );
@@ -49,8 +49,10 @@ class NoteApi {
       'title': note.title,
       'note': note.note,
       'isPinned': note.isPinned,
-      'updated_at': note.updatedAt.toIso8601String(),
-      'created_at': note.createdAt.toIso8601String(),
+      'updated_at':
+          note.updatedAt == null ? null : note.updatedAt!.toIso8601String(),
+      'created_at':
+          note.createdAt == null ? null : note.createdAt!.toIso8601String(),
     };
     try {
       final body = json.encode(map);
@@ -74,7 +76,7 @@ class NoteApi {
     Map<String, dynamic> map = {
       'title': note.title,
       'note': note.note,
-      'updated_at': note.updatedAt.toIso8601String(),
+      'updated_at': note.updatedAt!.toIso8601String(),
     };
     try {
       final body = json.encode(map);
@@ -88,8 +90,8 @@ class NoteApi {
   }
 
   Future<void> toggleIsPinned(
-    String id,
-    bool isPinned,
+    String? id,
+    bool? isPinned,
     DateTime updatedAt,
   ) async {
     final uri = Uri.parse(
@@ -112,7 +114,7 @@ class NoteApi {
     }
   }
 
-  Future<void> deleteNote(String id) async {
+  Future<void> deleteNote(String? id) async {
     final uri = Uri.parse(
       'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
     );

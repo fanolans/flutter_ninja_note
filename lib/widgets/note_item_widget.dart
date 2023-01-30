@@ -8,11 +8,11 @@ import '../models/note_model.dart';
 
 class NoteItem extends StatefulWidget {
   // const NoteItem({Key key}) : super(key: key);
-  final String id;
+  final String? id;
   final BuildContext ctx;
   NoteItem({
-    @required this.id,
-    @required this.ctx,
+    required this.id,
+    required this.ctx,
   });
   @override
   State<NoteItem> createState() => _NoteItemState();

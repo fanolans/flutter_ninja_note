@@ -1,20 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:note/database/database_helper.dart';
 
 class Note {
   final String id;
   final String title;
   final String note;
-  final DateTime updatedAt;
-  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final DateTime? createdAt;
   bool isPinned;
 
   Note({
-    @required this.id,
-    @required this.title,
-    @required this.note,
-    @required this.updatedAt,
-    @required this.createdAt,
+    required this.id,
+    required this.title,
+    required this.note,
+    this.updatedAt,
+    this.createdAt,
     this.isPinned = false,
   });
 
@@ -32,18 +31,18 @@ class Note {
       DatabaseHelper.tableNotesTitle: title,
       DatabaseHelper.tableNotesNote: note,
       DatabaseHelper.tableNotesIsPinned: isPinned ? 1 : 0,
-      DatabaseHelper.tableNotesUpdatedAt: updatedAt.toIso8601String(),
-      DatabaseHelper.tableNotesCreatedAt: createdAt.toIso8601String(),
+      DatabaseHelper.tableNotesUpdatedAt: updatedAt!.toIso8601String(),
+      DatabaseHelper.tableNotesCreatedAt: createdAt!.toIso8601String(),
     };
   }
 
   Note copyWith({
-    String id,
-    String title,
-    String note,
-    DateTime updatedAt,
-    DateTime createdAt,
-    bool isPinned,
+    String? id,
+    String? title,
+    String? note,
+    DateTime? updatedAt,
+    DateTime? createdAt,
+    bool? isPinned,
   }) {
     return Note(
       id: id == null ? this.id : id,

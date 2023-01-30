@@ -68,7 +68,7 @@ class DatabaseHelper {
   }
 
   Future<void> toggleIsPinned(
-      String id, bool isPinned, DateTime updatedAt) async {
+      String? id, bool isPinned, DateTime updatedAt) async {
     final db = await DatabaseHelper.init();
     await db.update(
       tableNotes,
@@ -81,7 +81,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> deleteNote(String id) async {
+  Future<void> deleteNote(String? id) async {
     final db = await DatabaseHelper.init();
     await db.delete(
       tableNotes,
