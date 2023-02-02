@@ -119,7 +119,7 @@ class NoteApi {
       'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
     );
     try {
-      final response = await http.patch(uri);
+      final response = await http.delete(uri);
       if (response.statusCode != 200) {
         throw Exception();
       }
