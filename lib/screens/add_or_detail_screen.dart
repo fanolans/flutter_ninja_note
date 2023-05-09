@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 class AddOrDetailScreen extends StatefulWidget {
   static const routeName = '/AddOrDetailScreen';
+
+  const AddOrDetailScreen({super.key});
   @override
   _AddOrDetailScreenState createState() => _AddOrDetailScreenState();
 }
