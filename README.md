@@ -2,6 +2,9 @@
 Aplikasi Ninja Note digunakan untuk menyimpan informasi, catatan, dan ide dalam bentuk teks.
 
 ## Screenshots
-![1](https://user-images.githubusercontent.com/85090127/215334441-b65e670f-8758-45fc-a004-68728fbc0284.png)
-![2](https://user-images.githubusercontent.com/85090127/215334443-39e80aa2-1519-4610-b445-b23cc06048fd.png)
-![3](https://user-images.githubusercontent.com/85090127/215404847-c4709e67-d73d-4f76-b091-a8869e126e72.png)
+![R1](https://github.com/fanolans/ninja-note/assets/85090127/040e112b-925f-42e8-be1f-a0eee699ff41)
+![R2](https://github.com/fanolans/ninja-note/assets/85090127/ff91cf80-aaf0-4e99-a7c1-3d1761c13714)
+![R3](https://github.com/fanolans/ninja-note/assets/85090127/a536bda2-fbd7-421a-ab41-5803e8ec00d1)
+![R4](https://github.com/fanolans/ninja-note/assets/85090127/62003ee3-402d-451b-bcb4-a800992f406b)
+
+
