@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../models/note_model.dart';
 
 class NotesGrid extends StatefulWidget {
+  const NotesGrid({super.key});
+
   @override
   State<NotesGrid> createState() => _NotesGridState();
 }
