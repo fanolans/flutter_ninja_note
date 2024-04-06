@@ -8,6 +8,9 @@ The Ninja Note app is used to store information, notes, and ideas in text form.
 <img src="https://github.com/fanolans/ninja-note/assets/85090127/01f5ec68-ae0f-462f-aaa8-e5337d796fe2" width="200">
 <img src="https://github.com/fanolans/ninja-note/assets/85090127/bab25141-12cb-4708-b5d4-8641e04615a9" width="200">
 
+<img src="https://github.com/fanolans/ninja_note/assets/85090127/927ee4f5-5981-4f7d-b933-c768836b06ce" width="200">
+<img src="https://github.com/fanolans/ninja_note/assets/85090127/b136c93a-aa4d-4a32-8e0d-994dc17eb4c1" width="200">
+
 ## Features
 
 - Add Note
