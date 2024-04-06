@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../widgets/notes_grid_widget.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   // const HomeScreen({super.key});
 
   @override
@@ -35,8 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(),
             );
           }
-
-          return NotesGrid();
+          return const NotesGrid();
         },
       ),
       floatingActionButton: FloatingActionButton(

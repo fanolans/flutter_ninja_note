@@ -35,9 +35,9 @@ class DatabaseHelper {
     final results = await db.query('notes');
 
     List<Note> listNote = [];
-    results.forEach((data) {
+    for (var data in results) {
       listNote.add(Note.fromDb(data));
-    });
+    }
 
     return listNote;
   }
@@ -46,13 +46,13 @@ class DatabaseHelper {
     final db = await DatabaseHelper.init();
     Batch batch = db.batch();
 
-    listNote.forEach((note) {
+    for (var note in listNote) {
       batch.insert(
         tableNotes,
         note.toDb(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-    });
+    }
 
     await batch.commit();
   }

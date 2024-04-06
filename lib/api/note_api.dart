@@ -7,14 +7,13 @@ import 'package:http/http.dart' as http;
 class NoteApi {
   Future<List<Note>> getAllNote() async {
     final uri = Uri.parse(
-      'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
+      'https://ninja-note-7c65b-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
     );
     List<Note> notes = [];
     try {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         final result = json.decode(response.body) as Map<String, dynamic>;
-        print(response.statusCode);
 
         result.forEach(
           (key, value) {
@@ -43,20 +42,19 @@ class NoteApi {
 
   Future<String?> postNote(Note note) async {
     final uri = Uri.parse(
-      'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
+      'https://ninja-note-7c65b-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json',
     );
     Map<String, dynamic> map = {
       'title': note.title,
       'note': note.note,
       'isPinned': note.isPinned,
-      'updated_at':
-          note.updatedAt == null ? null : note.updatedAt!.toIso8601String(),
-      'created_at':
-          note.createdAt == null ? null : note.createdAt!.toIso8601String(),
+      'updated_at': note.updatedAt?.toIso8601String(),
+      'created_at': note.createdAt?.toIso8601String(),
     };
     try {
       final body = json.encode(map);
       final response = await http.post(uri, body: body);
+
       if (response.statusCode == 200) {
         return json.decode(response.body)['name'];
       } else {
@@ -71,7 +69,7 @@ class NoteApi {
 
   Future<void> updateNote(Note note) async {
     final uri = Uri.parse(
-      'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/${note.id}.json',
+      'https://ninja-note-7c65b-default-rtdb.asia-southeast1.firebasedatabase.app/notes/${note.id}.json',
     );
     Map<String, dynamic> map = {
       'title': note.title,
@@ -86,7 +84,7 @@ class NoteApi {
       }
     } on SocketException {
       throw const SocketException('TIdak dapat terhubung ke internet');
-    } catch (e) {}
+    }
   }
 
   Future<void> toggleIsPinned(
@@ -95,7 +93,7 @@ class NoteApi {
     DateTime updatedAt,
   ) async {
     final uri = Uri.parse(
-      'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
+      'https://ninja-note-7c65b-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
     );
     Map<String, dynamic> map = {
       'isPinned': isPinned,
@@ -116,7 +114,7 @@ class NoteApi {
 
   Future<void> deleteNote(String? id) async {
     final uri = Uri.parse(
-      'https://ninja-note-1c483-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
+      'https://ninja-note-7c65b-default-rtdb.asia-southeast1.firebasedatabase.app/notes/$id.json',
     );
     try {
       final response = await http.delete(uri);

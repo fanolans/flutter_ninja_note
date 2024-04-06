@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note/models/note_model.dart';
 import 'package:note/providers/notes_provider.dart';
+import 'package:note/utils/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 class AddOrDetailScreen extends StatefulWidget {
@@ -9,6 +12,7 @@ class AddOrDetailScreen extends StatefulWidget {
 
   const AddOrDetailScreen({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _AddOrDetailScreenState createState() => _AddOrDetailScreenState();
 }
 
@@ -19,7 +23,6 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     note: '',
   );
   bool _init = true;
-  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -27,9 +30,8 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
     if (_formKey.currentState != null) {
       _formKey.currentState!.save();
     }
-    setState(() {
-      _isLoading = true;
-    });
+    LoadingOverlay.show(context);
+
     try {
       final now = DateTime.now();
       _note = _note.copyWith(
@@ -37,11 +39,12 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
         createdAt: now,
       );
       final notesProvider = Provider.of<NotesProvider>(context, listen: false);
-      if (_note.id == null) {
+      if (_note.id.isEmpty) {
         await notesProvider.addNote(_note);
       } else {
         await notesProvider.updateNote(_note);
       }
+      LoadingOverlay.hide(context);
     } catch (e) {
       await showDialog(
         context: context,
@@ -90,19 +93,17 @@ class _AddOrDetailScreenState extends State<AddOrDetailScreen> {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               onPressed: submitNote,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text(
-                      'Simpan',
-                      style: TextStyle(color: Colors.white),
-                    ),
+              child: const Text(
+                'Simpan',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],
       ),
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(20),

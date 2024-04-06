@@ -10,7 +10,8 @@ class NoteItem extends StatefulWidget {
   // const NoteItem({Key key}) : super(key: key);
   final String? id;
   final BuildContext ctx;
-  NoteItem({
+  const NoteItem({
+    super.key,
     required this.id,
     required this.ctx,
   });
@@ -59,7 +60,7 @@ class _NoteItemState extends State<NoteItem> {
                 );
               },
               icon: Icon(
-                note.isPinned ? CustomIcons.pin : CustomIcons.pin_outline,
+                note.isPinned ? CustomIcons.pin : CustomIcons.pinOutline,
               ),
             ),
           ),

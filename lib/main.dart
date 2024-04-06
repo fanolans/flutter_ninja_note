@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
-        home: HomeScreen(),
+        home: const HomeScreen(),
         routes: {
-          AddOrDetailScreen.routeName: (ctx) => AddOrDetailScreen(),
+          AddOrDetailScreen.routeName: (ctx) => const AddOrDetailScreen(),
         },
       ),
     );
