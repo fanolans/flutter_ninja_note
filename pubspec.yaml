@@ -42,6 +42,7 @@ dependencies:
   path: ^1.8.0
   loading_animation_widget: ^1.2.1
   overlay_loading_progress: ^1.0.1
+  firebase_core: ^2.29.0
 
 dev_dependencies:
   flutter_test:

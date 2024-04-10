@@ -8,35 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:848978343544:android:497a3d2f135a4fc6771f8d",
-        "android_client_info": {
-          "package_name": "com.example.note"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "848978343544-b1cfl7a6dpvpttdi2nggg90m0mnlrqp2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDfQ0F4MjcEP8v-G8qH2LZcbB8ty3IiUE8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "848978343544-b1cfl7a6dpvpttdi2nggg90m0mnlrqp2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:848978343544:android:49f9fc63075f6e19771f8d",
         "android_client_info": {
           "package_name": "com.fanosbyte.ninjanote"
